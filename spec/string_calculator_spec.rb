@@ -52,14 +52,27 @@ RSpec.describe StringCalculator do
     it 'returns output when input is multiple digit in string' do
       expect(@cal.add("1,2,3,4")).to eq(10)
     end
+    it 'returns output when input is multiple digit in string' do
+      expect(@cal.add("1,2,3,4,56,89,100")).to eq(255)
+    end
     it 'returns output when input is new lines between numbers' do
-      expect(@cal.add("1,2,3,4")).to eq(10)
+      expect(@cal.add("1,2\n3,4")).to eq(10)
+    end
+    it 'returns output when input is multiples for new lines between numbers' do
+      expect(@cal.add("1,\n2\n3,4")).to eq(10)
     end
     it 'returns output when input is with different delimiters' do
-      expect(@cal.add("1,2,3,4")).to eq(10)
+      expect(@cal.add("//;\n1;2;3;4")).to eq(10)
+    end
+    it 'returns output when input is with different delimiters' do
+      expect(@cal.add("//$\n1$2$3$4")).to eq(10)
+    end
+    it 'returns output when input is with different delimiters' do
+      expect(@cal.add("//^\n1^2^3^4")).to eq(10)
     end
     it "throws an exception if negative numbers are passed" do
       expect{@cal.add("1,2,-3")}.to raise_error(ArgumentError, 'negative numbers not allowed: -3')
     end
+
   end
 end
