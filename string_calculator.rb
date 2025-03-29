@@ -19,6 +19,8 @@ class StringCalculator
 
     def sanitize_input(str)
       list = check_delimitier(str).map(&:to_i)
+      validate_negative(list)
+      list
     end
 
     def check_delimitier(str)
@@ -31,5 +33,10 @@ class StringCalculator
       else
         numbers_list = str.split(DEFAULT_DELIMITERS)
       end
+    end
+
+    def validate_negative(numbers)
+      negative_num = numbers.select{|num| num < 0}
+      raise ArgumentError, "negative numbers not allowed: #{negative_num.join(', ')}" if negative_num.any?
     end
 end

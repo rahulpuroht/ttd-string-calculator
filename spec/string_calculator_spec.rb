@@ -24,34 +24,42 @@ RSpec.describe StringCalculator do
       result = @cal.send(:sanitize_input, "//;\n1;2")
       expect(result).to eq([1,2])
     end
+    it "should have check_delimitier private method" do
+      result = @cal.send(:check_delimitier, "1,2\n3")
+      expect(result).to eq(["1", "2", "3"])
+    end
+    it "should have validate_negative private method" do
+      result = @cal.send(:validate_negative, [1,2])
+      expect(result).to eq(nil)
+    end
 
   end
 
 
   describe 'add' do
+    before do
+      @cal = StringCalculator.new
+    end
     it 'returns 0 if input is blank' do
-      cal = StringCalculator.new
-      expect(cal.add("")).to eq(0)
+      expect(@cal.add("")).to eq(0)
     end
     it 'returns output when input is single digit in string' do
-      cal = StringCalculator.new
-      expect(cal.add("1")).to eq(1)
+      expect(@cal.add("1")).to eq(1)
     end
     it 'returns output when input is two digit in string' do
-      cal = StringCalculator.new
-      expect(cal.add("1,2")).to eq(3)
+      expect(@cal.add("1,2")).to eq(3)
     end
     it 'returns output when input is multiple digit in string' do
-      cal = StringCalculator.new
-      expect(cal.add("1,2,3,4")).to eq(10)
+      expect(@cal.add("1,2,3,4")).to eq(10)
     end
     it 'returns output when input is new lines between numbers' do
-      cal = StringCalculator.new
-      expect(cal.add("1,2,3,4")).to eq(10)
+      expect(@cal.add("1,2,3,4")).to eq(10)
     end
     it 'returns output when input is with different delimiters' do
-      cal = StringCalculator.new
-      expect(cal.add("1,2,3,4")).to eq(10)
+      expect(@cal.add("1,2,3,4")).to eq(10)
+    end
+    it "throws an exception if negative numbers are passed" do
+      expect{@cal.add("1,2,-3")}.to raise_error(ArgumentError, 'negative numbers not allowed: -3')
     end
   end
 end
