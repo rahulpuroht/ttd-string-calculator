@@ -16,6 +16,14 @@ RSpec.describe StringCalculator do
       result = @cal.send(:sanitize_input, "1,2")
       expect(result).to eq([1,2])
     end
+    it "should have sanitize_input private method  handle new lines between numbers" do
+      result = @cal.send(:sanitize_input, "1,2\n3")
+      expect(result).to eq([1,2,3])
+    end
+    it "should have sanitize_input private method  handle Support different delimiters" do
+      result = @cal.send(:sanitize_input, "//;\n1;2")
+      expect(result).to eq([1,2])
+    end
 
   end
 
@@ -34,6 +42,14 @@ RSpec.describe StringCalculator do
       expect(cal.add("1,2")).to eq(3)
     end
     it 'returns output when input is multiple digit in string' do
+      cal = StringCalculator.new
+      expect(cal.add("1,2,3,4")).to eq(10)
+    end
+    it 'returns output when input is new lines between numbers' do
+      cal = StringCalculator.new
+      expect(cal.add("1,2,3,4")).to eq(10)
+    end
+    it 'returns output when input is with different delimiters' do
       cal = StringCalculator.new
       expect(cal.add("1,2,3,4")).to eq(10)
     end
